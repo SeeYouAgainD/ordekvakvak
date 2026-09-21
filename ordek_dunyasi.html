@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ördek Dünyası — Tüylü Kaşiflerin Sitesi</title>
+<style>
+/* ============================================================
+   ÖRDEK DÜNYASI — TASARIM
+   ============================================================ */
+:root{
+  --sari:#FFD93D;
+  --sari-koyu:#F6B93B;
+  --turuncu:#E58E26;
+  --su:#4A90D9;
+  --su-acik:#A8D8EA;
+  --su-koyu:#2C5F8A;
+  --yesil:#6BCB77;
+  --koyu:#1F2D3D;
+  --krem:#FFFDF5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:linear-gradient(180deg, #A8D8EA 0%, #E8F6FF 40%, #FFFDF5 100%);
+  min-height:100vh;
+  color:var(--koyu);
+}
+/* ---------- Başlık ---------- */
+header{
+  background:linear-gradient(135deg, var(--sari) 0%, var(--sari-koyu) 100%);
+  padding:38px 20px 90px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+header h1{
+  font-size:clamp(28px,5vw,52px);
+  color:#5a3d00;
+  letter-spacing:2px;
+  text-shadow:2px 2px 0 rgba(255,255,255,.5);
+}
+header p{
+  color:#7a5200;
+  font-size:clamp(14px,2vw,19px);
+  margin-top:8px;
+  font-style:italic;
+}
+.duck-float{
+  position:absolute;
+  font-size:42px;
+  animation:float 6s ease-in-out infinite;
+  opacity:.85;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-4deg);}
+  50%{transform:translateY(-14px) rotate(4deg);}
+}
+.wave{
+  position:absolute;
+  bottom:-2px; left:0; width:100%; height:60px;
+  background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,30 C300,60 600,0 900,30 C1050,45 1150,20 1200,30 L1200,60 L0,60 Z" fill="%23E8F6FF"/></svg>') repeat-x;
+  background-size:1200px 60px;
+}
+/* ---------- Sekmeler ---------- */
+nav{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:-48px auto 30px;
+  position:relative;
+  z-index:5;
+  padding:0 15px;
+}
+.tab-btn{
+  border:none;
+  cursor:pointer;
+  padding:14px 26px;
+  border-radius:50px;
+  font-size:16px;
+  font-weight:700;
+  background:#ffffff;
+  color:var(--su-koyu);
+  box-shadow:0 4px 14px rgba(44,95,138,.25);
+  transition:all .25s ease;
+  border:3px solid transparent;
+}
+.tab-btn:hover{transform:translateY(-3px);}
+.tab-btn.active{
+  background:var(--su);
+  color:#fff;
+  border-color:#fff;
+  transform:translateY(-3px) scale(1.05);
+}
+/* ---------- İçerik ---------- */
+main{max-width:1050px;margin:0 auto;padding:0 20px 70px;}
+.tab-content{display:none;animation:fadeIn .5s ease;}
+.tab-content.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:translateY(0);}}
+.card{
+  background:#fff;
+  border-radius:22px;
+  padding:34px;
+  margin-bottom:26px;
+  box-shadow:0 8px 24px rgba(31,45,61,.10);
+  border:1px solid #eef4f8;
+}
+.card h2{
+  color:var(--su-koyu);
+  margin-bottom:16px;
+  font-size:clamp(22px,3vw,30px);
+}
+.card h3{color:var(--turuncu);margin:22px 0 10px;font-size:20px;}
+.card p{line-height:1.85;margin-bottom:14px;font-size:16px;color:#37475a;}
+.card ul{margin:0 0 14px 24px;line-height:1.9;color:#37475a;}
+.card img, .emoji-big{font-size:64px;text-align:center;display:block;margin:10px 0;}
+.badge{
+  display:inline-block;background:var(--sari);color:#5a3d00;
+  padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700;margin:3px;
+}
+.quote{
+  border-left:5px solid var(--sari);
+  background:#FFF9E0;
+  padding:16px 20px;
+  border-radius:0 14px 14px 0;
+  font-style:italic;
+  margin:16px 0;
+  color:#6b5a1e;
+}
+/* Tür kartları */
+.species-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:22px;
+}
+.species{
+  background:linear-gradient(160deg,#ffffff, #F2FAFF);
+  border-radius:18px;
+  padding:24px;
+  border-top:6px solid var(--su);
+  box-shadow:0 5px 16px rgba(74,144,217,.15);
+  transition:transform .25s ease;
+}
+.species:hover{transform:translateY(-6px);}
+.species h4{color:var(--su-koyu);font-size:19px;margin-bottom:6px;}
+.species .latin{font-style:italic;color:#8aa0b4;font-size:14px;margin-bottom:10px;}
+.species p{font-size:14.5px;line-height:1.75;color:#46586b;}
+/* Evrim zaman çizelgesi */
+.timeline{position:relative;margin:30px 0 10px;padding-left:34px;}
+.timeline::before{
+  content:'';position:absolute;left:10px;top:0;bottom:0;width:5px;
+  background:linear-gradient(180deg,var(--su),var(--yesil));
+  border-radius:5px;
+}
+.tl-item{position:relative;margin-bottom:30px;}
+.tl-item::before{
+  content:'🦆';position:absolute;left:-40px;top:-2px;
+  background:#fff;border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.15);font-size:22px;
+}
+.tl-item .era{
+  display:inline-block;background:var(--su-koyu);color:#fff;
+  padding:3px 14px;border-radius:16px;font-size:13px;font-weight:700;margin-bottom:6px;
+}
+.tl-item h4{color:var(--koyu);margin-bottom:6px;font-size:18px;}
+.tl-item p{font-size:15px;line-height:1.75;color:#46586b;}
+/* ============================================================
+   OYUN
+   ============================================================ */
+.game-shell{background:#0f2537;border-radius:24px;padding:26px;color:#eaf4fb;box-shadow:0 10px 30px rgba(15,37,55,.4);}
+.game-top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.game-top h2{color:var(--sari);font-size:clamp(20px,3vw,28px);}
+#mapInfo{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:14px;padding:12px 18px;font-size:14px;line-height:1.7;max-width:520px;
+}
+#mapInfo b{color:var(--sari);}
+.btn{
+  border:none;cursor:pointer;padding:13px 28px;border-radius:40px;
+  font-size:16px;font-weight:700;transition:all .2s ease;
+}
+.btn-yesil{background:var(--yesil);color:#0b3d14;box-shadow:0 4px 0 #4a9e55;}
+.btn-yesil:hover{transform:translateY(-2px);box-shadow:0 6px 0 #4a9e55;}
+.btn-yesil:active{transform:translateY(2px);box-shadow:0 1px 0 #4a9e55;}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important;}
+canvas#raceCanvas{
+  width:100%;display:block;border-radius:16px;
+  background:linear-gradient(180deg,#7ec8e3 0%,#a8ddf0 55%,#8fd0a8 56%,#7bc48f 100%);
+}
+#choicePanel{
+  margin-top:16px;background:rgba(255,217,61,.08);
+  border:2px dashed rgba(255,217,61,.5);border-radius:16px;padding:18px;
+  display:none;
+}
+#choicePanel h3{color:var(--sari);margin-bottom:10px;}
+.choice-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.choice-btn{
+  flex:1;min-width:200px;background:#fff;color:var(--koyu);
+  border:none;border-radius:14px;padding:16px;cursor:pointer;
+  font-size:15px;font-weight:600;transition:all .2s ease;text-align:left;
+}
+.choice-btn:hover{background:var(--sari);transform:translateY(-3px);}
+.choice-btn small{display:block;color:#6b7c8c;margin-top:4px;font-weight:400;}
+#log{
+  margin-top:16px;max-height:140px;overflow-y:auto;font-size:13.5px;
+  background:rgba(0,0,0,.25);border-radius:12px;padding:12px 16px;line-height:1.8;
+}
+#log .good{color:#8ff0a4;} #log .bad{color:#ff9d9d;} #log .info{color:#9fd8ff;}
+#winner{
+  margin-top:16px;display:none;background:linear-gradient(135deg,var(--sari),var(--turuncu));
+  color:#4a2f00;padding:20px;border-radius:16px;text-align:center;font-size:20px;font-weight:800;
+}
+.howto{background:rgba(255,255,255,.06);border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.8;margin-top:14px;color:#cfe6f5;}
+footer{text-align:center;padding:26px;color:#7a8ea0;font-size:14px;background:#fff;border-top:3px solid var(--sari);}
+@media(max-width:640px){.card{padding:22px;}nav{margin-top:-40px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="duck-float" style="left:6%;top:20%;">🦆</span>
+  <span class="duck-float" style="right:8%;top:30%;animation-delay:1.5s;">🐥</span>
+  <span class="duck-float" style="left:22%;bottom:18%;animation-delay:3s;">🦆</span>
+  <span class="duck-float" style="right:25%;bottom:12%;animation-delay:2s;">🐤</span>
+  <h1>🦆 ÖRDEK DÜNYASI 🦆</h1>
+  <p>Tüylü yüzücülerin büyüleyici evrenine hoş geldiniz!</p>
+  <div class="wave"></div>
+</header>
+
+<nav>
+  <button class="tab-btn active" data-tab="genel">🏠 Genel Menü</button>
+  <button class="tab-btn" data-tab="turler">🎬 Ördek Türleri Belgeseli</button>
+  <button class="tab-btn" data-tab="evrim">🧬 Ördeklerin Evrimi</button>
+  <button class="tab-btn" data-tab="oyun">🏁 Ördek Yarışı</button>
+</nav>
+
+<main>
+
+<!-- ============ SEKME 1: GENEL ============ -->
+<section id="genel" class="tab-content active">
+  <div class="card">
+    <h2>🌊 Gaggaya Hoş Geldiniz!</h2>
+    <span class="emoji-big">🦆💛🦆💙🦆</span>
+    <p>Bu site, dünyanın en sevimli, en gürültülü ve şaşırtıcı derecede zeki su kuşları olan <b>ördeklerin</b> dünyasına açılan bir kapıdır. Burada ördeklerin biyolojisinden efsanelerine, evrimsel yolculuklarından onlarla yapacağınız eğlenceli bir yarış oyununa kadar her şeyi bulacaksınız.</p>
+    <p>Ördekler, ördekgiller (Anatidae) familyasını oluşturan kuşlardır ve dünya üzerinde <b>yaklaşık 120'den fazla türü</b> bulunur. Göllerde, nehirlerde, bataklıklarda ve hatta şehir parklarında bile karşımıza çıkan bu tüylü dostlarımız, insanlıkla binlerce yıldır iç içe yaşamaktadır.</p>
+
+    <h3>📌 Sitede Neler Var?</h3>
+    <ul>
+      <li><b>Genel Menü:</b> Ördeklerin temel özellikleri, ilginç bilgiler ve ördek hakkında bilmeniz gereken her şey.</li>
+      <li><b>Ördek Türleri Belgeseli:</b> Beş farklı ördek türü hakkında belgesel tadında, uzun ve detaylı anlatımlar.</li>
+      <li><b>Ördeklerin Evrimi:</b> Dinozor çağından günümüze uzanan 100 milyon yıllık büyüleyici evrim yolculuğu.</li>
+      <li><b>Ördek Yarışı:</b> Rastgele oluşan haritalarda ördeğinizle yarıştığınız, seçimlerinize göre hızlandıran veya yavaşlatan olaylarla dolu interaktif bir oyun!</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>✨ Ördekler Hakkında 15 İnanılmaz Gerçek</h2>
+    <ul>
+      <li>🦆 Ördekler uykuda bile yarı beyinleriyle uyanık kalabilir — bir yarısı uyurken diğeri düşmanlara karşı nöbette kalır.</li>
+      <li>💧 Tüyleri yağ bezleri sayesinde su geçirmezdir; bu yağlar "yüzey gerilimini" kırarak su üzerinde süzülmelerini sağlar.</li>
+      <li>🧭 Göçmen ördekler, manyetik alan algısı sayesinde binlerce kilometre yolculuk yapar ve neredeyse hiç kaybolmaz.</li>
+      <li>🗣️ Erkek ördekler "vaklar", dişiler "gaklar" — sesleri arasında ince bir fark vardır ve bilim insanları bunu ayırt edebilir.</li>
+      <li>⚡ Suda yüzerken ilerleyiş hızı saatte 10 km'ye, uçuşta ise saatte 80 km'nin üzerine çıkabilir.</li>
+      <li>👀 Gözleri kafasının yanlarında olduğu için neredeyse 340 derecelik bir görüş alanına sahiptirler.</li>
+      <li>🍞 Ekmek vermenin ördeklere zarar verdiğini biliyor muydunuz? Sağlıklı alternatifler mısır, bezelye ve maruldur!</li>
+      <li>💛 Civcivler, yumurtadan çıktıktan sonra gördükleri ilk hareketli nesneyi "anne" olarak benimser.</li>
+      <li>🌡️ Ayaklarında kan dolaşımını kontrol eden özel bir mekanizma vardır; bu sayede buzlu sularda bile ayakları donmaz.</li>
+      <li>🦴 Ördek kemikleri, boyutlarına göre inanılmaz hafif ve güçlüdür — uçuş için mükemmel tasarlanmıştır.</li>
+      <li>🏆 Evlat edinilmiş en yaşlı bilinen ördek "Ernie", 21 yaşını geçmiştir.</li>
+      <li>🪶 Her yıl tüy dökümü (molt) dönemine girerler ve bu dönemde uçamaz hale gelirler.</li>
+      <li>🤝 Ördekler sosyal hayvanlardır ve gruplarına "gagga" denir. Büyük gaggalar 100'den fazla birey içerebilir.</li>
+      <li>🌊 Dalış ördekleri 20 metre derinliğe kadar dalabilir ve su altında dakikalarca kalabilir.</li>
+      <li>🎨 Tüy renkleri ultraviyole ışıkta bile görünür — ördekler insanların göremediği desenleri birbirlerinde ayırt edebilir.</li>
+    </ul>
+    <div class="quote">"Basit görünen bir ördek, aslında milyonlarca yıllık evrimin mükemmel bir eseridir." — Bilinmeyen bir ördek bilgini</div>
+  </div>
+
+  <div class="card">
+    <h2>🍽️ Ördekler Ne Yer, Nasıl Yaşar?</h2>
+    <p>Ördekler <b>hem etçil hem otçul</b> beslenen "hepçil" kuşlardır. Beslenme şekilleri türe göre değişir: yüzerek beslenenler su yüzeyindeki tohum ve küçük canlıları gagalarıyla süzerken, dalan ördekler su altından yosun ve küçük balıklar yakalar. Kara ördekleri ise çimen, tohum ve böceklerle beslenir.</p>
+    <p>Bir ördeğin ortalama yaşam süresi türüne göre 5 ile 15 yıl arasında değişir. Doğal yaşam alanları göller, nehirler, bataklıklar ve lagünlerdir. Nesterler (yuvalayan yerler) genellikle su kenarına yakın, yüksek otlar arasında gizlenmiş bölgelerdir — bu sayede yırtıcılardan korunurlar.</p>
+    <p>İlginç bir detay: Ördekler uyurken gruplar halinde yuvarlanarak tüylerinin sıcaklığını paylaşırlar. Bu davranış, soğuk iklimlerde hayatta kalmalarını sağlayan en önemli stratejilerden biridir.</p>
+  </div>
+</section>
+
+<!-- ============ SEKME 2: ÖRDEK TÜRLERİ ============ -->
+<section id="turler" class="tab-content">
+  <div class="card">
+    <h2>🎬 Ördek Türleri: Doğanın Belgeseli</h2>
+    <p>Dünya üzerinde 120'den fazla ördek türü yaşar ve her biri kendi yaşam stratejisiyle doğayı fethetmiştir. Aşağıda, beş efsanevi türün hikâyesini belgesel anlatımıyla, uzun uzun inceleyeceksiniz. Hazırsanız, doğanın perdesi açılıyor…</p>
+  </div>
+
+  <div class="card species-grid">
+    <div class="species">
+      <h4>Yeşilbaş Ördek</h4>
+      <div class="latin">Anas platyrhynchos</div>
+      <p>Dünyanın en tanınmış ördeği olan Yeşilbaş, park göllerinin ve şehir havuzlarının tartışmasız kralıdır. Erkeklerinin parlak zümrüt yeşili başları, beyaz boyun halkaları ve kestane rengi göğüsleriyle süslü tüyleri, türü anında tanınabilir kılar. Dişiler ise kahverengi benekli kamuflaj tüyleriyle yuvalarını korur.</p>
+      <p>Yeşilbaş ördekler son derece uyarlanabilirdir; Alaska'dan Meksika'ya kadar devasa bir coğrafyada yaşarlar. Göçmen olan popülasyonlar kışın güneye, yazın kuzeye doğru binlerce kilometre yol alır. Çiftleşme mevsiminde erkekler, dişileri etkilemek için başlarını geriye atıp şık sesler çıkarır ve gösterişli hareketler sergiler.</p>
+      <p>Bu tür aynı zamanda neredeyse tüm evcil ördeklerin vahşi atasıdır — markette gördüğünüz beyaz ördekler bile aslında Yeşilbaş'ın binlerce yıllık evcilleştirme sürecinin ürünüdür. Zekâsı, cesareti ve insanlarla uyumuyla ördek dünyasının süperstarıdır.</p>
+      <p><b>Yaşam alanı:</b> Göller, nehirler, parklar, bataklıklar<br><b>Kanat açıklığı:</b> 81–98 cm<br><b>Ağırlık:</b> 0,7 – 1,6 kg</p>
+    </div>
+
+    <div class="species">
+      <h4>Mandarin Ördeği</h4>
+      <div class="latin">Aix galericulata</div>
+      <p>Doğu Asya'nın orman göllerinde yaşayan Mandarin Ördeği, doğanın en gösterişli su kuşu olarak kabul edilir. Erkeklerinin turuncu "bıyıkları", mor-yeşil yanakları ve turuncu-kahverengi karınlarıyla tüyleri, bir sanat eserini andırır. Adını Çinli yetkililerin giydiği "mandarin" ceketlerinden almıştır.</p>
+      <p>Doğada ağaç kovuklarında yuva yaparlar — evet, ördekler arasında ağaçlarda yuva yapan nadide türlerden biridir! Yavrular, yuvadan atladıklarında tüyleri henüz yumuşaktır ama düşüşe karşı hafif oldukları için zarar görmeden yere inebilirler. Bu muhteşem manevra, belgesellerin en çok izlenen sahnelerindendir.</p>
+      <p>Avrupa'da, özellikle İngiltere'de kaçak ya da serbest bırakılmış popülasyonlar doğallaşmıştır ve kırmızı listede olmamalarına rağmen orijinal yurtları olan Çin, Japonya ve Kore'de yaşam alanlarının azalması tehdidi altındadırlar. Manzaralı orman gölleri, bu göz alıcı kuşların gerçek cennetidir.</p>
+      <p><b>Yaşam alanı:</b> Orman gölleri ve derin bataklıklar<br><b>Kanat açıklığı:</b> 65–75 cm<br><b>Ağırlık:</b> 0,4 – 0,7 kg</p>
+    </div>
+
+    <div class="species">
+      <h4>Oduncu Ördeği</h4>
+      <div class="latin">Aix sponsa</div>
+      <p>Kuzey Amerika'nın baş döndürücü güzelliği Oduncu Ördeği, erkeklerinin metalik yeşil-kırmızı renk değiştiren başları ve beyaz çizgileriyle "en şık ördek" unvanını Mandarin ile paylaşır. Adını İngilizce'de "wood duck" — oduncu ördek — ifadesinden alır ve ağaç kovuklarında yuva yapmasıyla ünlüdür.</p>
+      <p>Gün batımında orman göllerinin üzerinde süzülüşleri, doğa fotoğrafçılarının rüya karelerindendir. Bu tür, 20. yüzyıl başında tüy ticareti ve yaşam alanı kaybı nedeniyle yok olma eşiğine gelmiş; ancak koruma programları ve yapay yuva kutuları sayesinde muhteşem bir geri dönüş hikâyesi yazmıştır. Bugün milyonlarca bireyle yeniden neşeyle çoğalmaktadır.</p>
+      <p>Yavrular yumurtadan çıktıktan bir gün sonra, henüz uçamıyorlarken, 10 metreye kadar yükseklikteki yuvalarından suya atlama cesaretini gösterirler. Anne ördek aşağıda onları bekler ve civcivler suya ulaştığında birlikte göle açılırlar. Bu cesur başlangıç, türün hayatta kalma stratejisinin en çarpıcı anıdır.</p>
+      <p><b>Yaşam alanı:</b> Ormanlık göletler, nehir kıyıları<br><b>Kanat açıklığı:</b> 66–73 cm<br><b>Ağırlık:</b> 0,5 – 0,9 kg</p>
+    </div>
+
+    <div class="species">
+      <h4>Uzun Kuyruk Ördeği</h4>
+      <div class="latin">Clangula hyemalis</div>
+      <p>Kuzey Kutbu'nun sert iklimlerinde yaşayan Uzun Kuyruk Ördeği, soğuğa meydan okuyan gerçek bir savaşçıdır. Erkeklerinin ince, uzun kuyruk tüyleri ona "uzun kuyruk" adını vermiştir. Kışın açık denizlerde, dalgaların arasında yüzerek beslenir — su sıcaklığı sıfırın altına düşse bile!</p>
+      <p>Bu tür, dünyanın en uzun göç rotalarından birine sahiptir: Kutup bölgelerinden kışlamak için Kuzey Amerika ve Avrupa'nın açık denizlerine kadar binlerce kilometre yol kat eder. Dalış sırasında kanatlarını kullanarak su altında ilerler ve midye, ıstakoz ile deniz salyangozu avlar.</p>
+      <p>Neşeli "vaklama" sesleri, açık denizlerin üzerinde kilometrelerce duyulabilir. Sert iklimin zorluklarına rağmen, sosyal ve hareketli doğasıyla kutup ekosistemlerinin en ilginç sakinlerindendir. İklim değişikliği onu da tehdit ediyor; deniz buzlarının erimesi beslenme alanlarını daraltmaktadır.</p>
+      <p><b>Yaşam alanı:</b> Kutup denizleri, açık su kütlesii<br><b>Kanat açıklığı:</b> 73–79 cm<br><b>Ağırlık:</b> 0,6 – 1,0 kg</p>
+    </div>
+
+    <div class="species">
+      <h4>Mısır Ördeği (Vakvak Kuşu)</h4>
+      <div class="latin">Cairina moschata</div>
+      <p>Güney Amerika ormanlarından dünyaya yayılan Mısır Ördeği, evcil ördek ırklarının en bilinenlerindendir. Vahşi formları koyu yeşilimsi-siyah tüylerle kaplıdır ve gözlerinin çevresinde kırmızımsı deri vardır. Türün en garip özelliği ise erkeklerinin yaptığı, adını verdiği "vakvak" değil, kesik ve hırıltılı sesidir.</p>
+      <p>Tropikal ormanlarda ağaç kovuklarında yuva yapar ve geceleri aktif olarak beslenir. Güçlü pençeleri ve tırmanma yeteneği sayesinde ağaçlara tırmanabilir — ördekler arasında eşine az rastlanan bir beceridir! Yaprak, meyve, tohum ve böceklerle beslenir; bu nedenle ormanların tohum dağıtıcıları arasında önemli bir rol oynar.</p>
+      <p>İnsanlar tarafından binlerce yıldır evcilleştirilmiştir ve eti için dünya genelinde yaygın olarak yetiştirilir. Vahşi Mısır ördekleri, Amazon yağmur ormanlarının biyolojik çeşitliliği için kritik öneme sahiptir ve nesli yaşam alanı kaybı nedeniyle baskı altındadır.</p>
+      <p><b>Yaşam alanı:</b> Tropikal ormanlar, nehir kıyıları<br><b>Kanat açıklığı:</b> 80–100 cm<br><b>Ağırlık:</b> 1,2 – 3,0 kg</p>
+    </div>
+
+    <div class="species">
+      <h4>Kılkuyruk (Süzülen Ördek)</h4>
+      <div class="latin">Anas acuta</div>
+      <p>Sonbahar göçünde gökyüzündeki V şekilli formasyonlarını izlemek, Kılkuyruk'un en büyüleyici özelliklerinden biridir. Erkeklerinin kuyruklarından uzanan iğne gibi ince tüyler, türe Türkçe adını vermiştir. Bu zarif kuyruk tüyleri, balon balığını andıran gagalarıyla birleşince ortaya gerçek bir sanat eseri çıkar.</p>
+      <p>Kuzey yarımkürenin tundra ve çayırlarında ürer, kışın ise güneye iner. Beslenirken su yüzeyine kafasını daldırıp kıçını havaya kaldırdığı komik pozuyla tanınır. Bilim insanları, bu pozun su altı bitkilerine ulaşmak için evrimleşmiş mükemmel bir adaptasyon olduğunu söyler.</p>
+      <p>Kılkuyruk ördekleri aynı zamanda havada inanılmaz manevralar yapabilir; ani dönüşler ve hızlı dalışlarla yırtıcılardan kurtulurlar. Göç sırasında liderlik değişimi yaparak rüzgarın yükünü paylaşmaları, onları doğanın en akıllı ekiplerinden biri yapar.</p>
+      <p><b>Yaşam alanı:</b> Tundra gölleri, çayırlar, kıyı sul<br><b>Kanat açıklığı:</b> 80–95 cm<br><b>Ağırlık:</b> 0,6 – 1,4 kg</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🎥 Belgesel Notları: Ördeklerin Gizli Yaşamı</h2>
+    <p>Bir göle sabah erken saatlerde giderseniz, ördeklerin gününü başlattığını görürsünüz. Güneş doğarken su üzerinde tüylerini düzeltirler, gagalarıyla yağ bezlerinden çıkardıkları sıvıyı tüylerine yayarak su geçirmezliklerini tazelerler. Bu sabah ritüeli, onları suyun dondurucu soğuğundan koruyan hayati bir bakım seansıdır.</p>
+    <p>Gün ilerledikçe sosyal yaşam belirginleşir: baskın erkekler bölge savaşı yapar, dişiler yavru bakımı için uygun kıyıları gözden geçirir ve genç ördekler kanatlarını sınamak için kısa uçuşlar dener. Akşamüstü gökyüzünde V formasyonları oluşmaya başlar ve göl, gün batımının altın ışıklarında sessizliğe bürünür. İşte bir ördeğin bir günü böylece, milyonlarca yıllık evrimin kusursuz senaryosuyla, bir kez daha sona erer.</p>
+  </div>
+</section>
+
+<!-- ============ SEKME 3: EVRİM ============ -->
+<section id="evrim" class="tab-content">
+  <div class="card">
+    <h2>🧬 Ördeklerin Evrimi: 100 Milyon Yıllık Yolculuk</h2>
+    <p>Bugün gölette süzülen sevimli bir ördek, aslında dinozorlarla aynı gezegeni paylaşan soyların modern temsilcisidir. Ördeklerin evrimsel hikâyesi, fosil kayıtlarında çok iyi korunmuş izler bırakmış, bilim insanlarına uçuşun, yüzmenin ve göçmenliğin nasıl evrimleştiğini anlatan eşsiz bir hikâyedir. Gelin, bu uzun yolculuğu zaman tünelinde adım adım inceleyelim.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="era">~100 Milyon Yıl Önce · Kretase Dönemi</span>
+        <h4>Vegavis: İlk Ördek Akrabası</h4>
+        <p>Antarktika'da bulunan Vegavis iaai fosili, modern ördeklerin atası olduğu düşünülen en eski kuşlardan biridir. Bu muhteşem fosil, ördeklerin dinozorların çağında, 66 milyon yıl önceki büyük yok oluştan HAYATTA KALDIĞINI kanıtlar. Vegavis'in hava keseleri ve ses çıkarma organları, modern ördeklerle neredeyse aynıydı — yani ilk "vaklama" sesleri, biz insanlardan çok daha önce bu gezegende yankılanıyordu.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">~66 Milyon Yıl Önce · K-Pg Yok Oluşu</span>
+        <h4>Büyük Fırsatın Eşiği</h4>
+        <p>Dinozorların yok oluşu, gökdelen boyundaki canavarlar kadar olmasa da birçok türü de sildi. Ancak küçük gövdeli, suya yakın yaşayan, bitki tohumu ve küçük canlılarla beslenebilen ördek ataları bu felaketten yararlandı: Boşalan ekolojik nişleri hızla doldurdular. Fosil kayıtları, yok oluştan sonraki birkaç milyon yıl içinde ördekgillerin patlamasız bir çeşitlenme yaşadığını gösterir.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">~50-30 Milyon Yıl Önce · Eosen-Oligosen</span>
+        <h4>Modern Ördegin Şekillenişi</h4>
+        <p>Almanya'daki ünlü Messel Çukuru fosil yatağında, modern ördeklerin anatomisine çok benzeyen Presbyornis gibi türler bulunmuştur. Bu dönemde gövde şekli, geniş düz gagalar ve yüzmeye uygun bacaklar standartlaşmaya başladı. Artık su yüzeyinde süzülen, su altına dalabilen gerçek "ördek" formu ortaya çıkıyordu.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">~10 Milyon Yıl Önce · Miyosen</span>
+        <h4>Aile Ağacının Dallanması</h4>
+        <p>Bugünkü ördekgiller ailesinin ana kolları bu dönemde belirginleşti: Yüzerek beslenen ördekler (Anatinae), dalgıç ördekler (Aythyinae), kazlar ve kuğuların ortak atası dalları... Her biri farklı beslenme stratejisi geliştirdi. Yüzerek beslenenler filtreleme gagaları, dalgıçlar ise iri gagalar ve güçlü bacaklar evrimleştirdi. Bu "çeşitlenme patlaması", ördekleri dünyanın her ekosistemine yayılacak kadar esnek hale getirdi.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">~2 Milyon Yıl Önce · Pliyosen-Pleistosen</span>
+        <h4>Buz Çağı Kahramanları</h4>
+        <p>Buz çağları, ördekler için bir yandan zorlu bir test, diğer yandan evrimsel bir itici güç oldu. Buzul örtüsü altındaki dünya, ördekleri göç davranışı geliştirmeye zorladı. Günümüz Yeşilbaş'ının atası, bu dönemde Avrasya'da şekillendi ve kısa sürede dünyanın en yaygın ördek türü haline geldi. Uzun mesafe göçlerinin genetik temeli bu sert dönemde atıldı.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">~10.000 Yıl Önce · Neolitik Devrim</span>
+        <h4>Evcilleştirme Başlıyor</h4>
+        <p>İnsanlar tarımı keşfettiğinde, ördeklerle ilişkisi de değişti. Güneydoğu Asya'da Mısır Ördeği, Avrasya'da Yeşilbaş insanlar tarafından evcilleştirildi. Ördekler; eti, yumurtası ve tüyleri için beslenmeye başlandı. Bugün küresel ördek populasyonunun büyük çoğunluğu, bu iki türün evcil soylarından gelmektedir. Ördekler, insan uygarlığının en eski ortaklarından biri oldu.</p>
+      </div>
+      <div class="tl-item">
+        <span class="era">Günümüz · Holosen</span>
+        <h4>Modern Çağın Ördekleri</h4>
+        <p>Bugün 120'den fazla tür, her kıtada (Antarktika hariç) yaşamaktadır. Ancak modern çağ yeni tehditler getirdi: İklim değişikliği göç rotalarını bozuyor, yaşam alanı kaybı sulak alanları yok ediyor, plastik kirliliği deniz ördeklerini zehirliyor. Neyse ki koruma bilinci de yükseliyor: Oduncu Ördeği'nin geri dönüşü, doğru koruma stratejilerinin ne kadar etkili olabileceğinin kanıtıdır. Ördeklerin 100 milyon yıllık yolculuğu, bizim ellerimizde devam edecek.</p>
+      </div>
+    </div>
+
+    <h3>🔬 Evrimde Ördeklerin Kazandığı Süper Güçler</h3>
+    <ul>
+      <li><b>Su Geçirmez Tüyler:</b> Kuyruk sokumundaki yağ bezi, tüylere yaydığı yağla su moleküllerini iter. Bu, tüylerin arasında ıslaklık yerine hava hapseder ve ördeği hem sıcak tutar hem de su üzerinde yüzdürür.</li>
+      <li><b>Rete Mirabile (Mucize Ağ):</b> Bacaklardaki damar ağı, soğuk suya daldırılan ayaklardaki kanı bedenle ısıtış-tokuşturur. Böylece kalp sıcak kalırken ayaklar soğuk suya dirençli hale gelir.</li>
+      <li><b>Hava Keseleri:</b> Sadece uçmak için değil, dalış sırasında vücut yoğunluğunu ayarlamak için de kullanılırlar. Dalgıç ördekler, su altında balık gibi manevra yapabilir.</li>
+      <li><b>Manyetik Algı:</b> Gözlerindeki ve beyinlerindeki özel hücreler, Dünya'nın manyetik alanını algılayarak binlerce kilometrelik göçlerde pusula görevi görür.</li>
+      <li><b>Yarım Beyin Uykusu:</b> Bilimsel adı "unihemispheric slow-wave sleep" olan bu yetenek, bir beyin yarısı uykudayken diğerinin uyanık kalmasını sağlar — hayatta kalma için evrimin mükemmel çözümü.</li>
+    </ul>
+
+    <div class="quote">Her ördek, bir dinozor soyuyla aynı masada yemek yiyen, buzul çağlarını aşan, insanlığın doğuşuna tanıklık eden bir tarih kitabıdır.</div>
+  </div>
+</section>
+
+<!-- ============ SEKME 4: OYUN ============ -->
+<section id="oyun" class="tab-content">
+  <div class="game-shell">
+    <div class="game-top">
+      <div>
+        <h2>🏁 BÜYÜK ÖRDEK YARIŞI</h2>
+        <div id="mapInfo">Harita oluşturmak için aşağıdaki butona bas! 🦆</div>
+      </div>
+      <button id="startBtn" class="btn btn-yesil">🎲 Yeni Harita Oluştur</button>
+    </div>
+
+    <canvas id="raceCanvas" width="1000" height="420"></canvas>
+
+    <div id="choicePanel">
+      <h3 id="choiceTitle">⚡ Karar Zamanı!</h3>
+      <p id="choiceDesc" style="margin-bottom:12px;font-size:14px;color:#cfe6f5;"></p>
+      <div class="choice-btns" id="choiceBtns"></div>
+    </div>
+
+    <div id="winner"></div>
+    <div id="log"></div>
+
+    <div class="howto">
+      <b>📖 Nasıl Oynanır?</b> Her yarışta oyun, sizin için <b>rastgele bir harita</b> oluşturur: göl uzunluğu, bölge sayısı, akıntı yönü ve rüzgar değişir. Yarış sırasında ördeğiniz belli noktalara geldiğinde karşınıza <b>seçimler</b> çıkar: hangi rotayı seçeceğinize, ne yapacağınıza siz karar verirsiniz. Seçimleriniz ördeğinizi <span style="color:#8ff0a4;font-weight:700;">hızlandırabilir</span> veya <span style="color:#ff9d9d;font-weight:700;">yavaşlatabilir</span>! Üstelik bazı seçeneklerin sonucu gizemlidir — şansınıza güvenin. Sizin ördeğiniz en alttaki <b>sarı 🦆</b>, rakipleriniz diğer ördekler. Şansınız bol olsun!
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>🦆 Ördek Dünyası — Tüyler, su ve sevgiyle yapıldı · 2026</footer>
+
+<script>
+/* ============================================================
+   SEKME GEÇİŞLERİ
+   ============================================================ */
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    tabContents.forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ============================================================
+   ÖRDEK YARIŞI OYUNU
+   ============================================================ */
+const canvas = document.getElementById('raceCanvas');
+const ctx = canvas.getContext('2d');
+const startBtn = document.getElementById('startBtn');
+const mapInfo = document.getElementById('mapInfo');
+const choicePanel = document.getElementById('choicePanel');
+const choiceTitle = document.getElementById('choiceTitle');
+const choiceDesc = document.getElementById('choiceDesc');
+const choiceBtns = document.getElementById('choiceBtns');
+const logEl = document.getElementById('log');
+const winnerEl = document.getElementById('winner');
+
+const RANKS = ['1.','2.','3.','4.'];
+const NAMES = ['Pofuduk','Boncuk','Pamuk','Zıpzıp'];
+const EMOJIS = ['🦆','🦆','🦆','🦆'];
+const COLORS = ['#FFD93D','#FF8FA3','#7BC8F0','#B5E48C'];
+
+let game = null;
+let rafId = null;
+
+function rnd(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* ---------- Rastgele Harita Oluşturma ---------- */
+function generateMap(){
+  const names = ['Gölümser Gölü','Sazlık Sarayı','Pofuduk Patikası','Vakvak Vadisi','Tüylü Deltası','Gaga Nehri'];
+  const weather = pick([
+    {name:'Güneşli ve Sakin', mod:1.0},
+    {name:'Rüzgarlı (Zıt yönde!)', mod:0.92},
+    {name:'Hafif Yağmurlu', mod:0.96},
+    {name:'Mükemmel Bahar Günü', mod:1.08}
+  ]);
+  const zoneTypes = ['sazlik','akinti','cop','cicek','golge','durgun'];
+  const zones = [];
+  for(let i=0;i<rnd(3,5);i++){
+    zones.push({ type: pick(zoneTypes), from: rnd(15,80), to: 0 });
+  }
+  zones.sort((a,b)=>a.from-b.from);
+  zones.forEach((z,i)=>{
+    if(i>0 && z.from < zones[i-1].to) z.from = zones[i-1].to + 1;
+    z.to = Math.min(z.from + rnd(8,15), 95);
+    if(z.to <= z.from) z.to = z.from + 4;
+  });
+  return {
+    name: pick(names),
+    lengthKm: rnd(3,8),
+    weather,
+    zones,
+    waterFlow: pick(['Hafif Akıntı','Orta Akıntı','Güçlü Akıntı']),
+    desc: pick([
+      'Bugün yarışçılarımız zorlu bir rotada ter dökecek!',
+      'Su biraz dalgalı, dikkatli seçimler gerekiyor!',
+      'Bu parkur uzun, dayanıklılık testi olacak!',
+      'Sazlıklar arası gizli kısayollar var!'
+    ])
+  };
+}
+
+/* ---------- Seçim Olayları ---------- */
+function makeChoiceEvent(zones){
+  const z = pick(zones);
+  const zoneNameMap = {sazlik:'Sazlık Bölgesi',akinti:'Akıntı Bölgesi',cop:'Kirlenmiş Su',cicek:'Çiçekli Koy',golge:'Gölgeli Kanal',durgun:'Durgun Su'};
+  const zoneLabel = zoneNameMap[z.type];
+  const events = [
+    {
+      title:'🌿 Yol Ayrımı: ' + zoneLabel,
+      desc:'İleride iki rota görünüyor. Hangisini seçeceksin?',
+      options:[
+        {label:'Kısa ama Tehlikeli Rota', sub:'Sazlıkların arasından geçiyor...', effect:()=> Math.random()<0.55 ? {d:1.6,m:'🍀 Şanslısın! Kısayol gerçekmiş! Hızlandın.'} : {d:0.5,m:'😱 Sazlıkta takıldın! Yavaşladın.'}},
+        {label:'Güvenli Uzun Rota', sub:'Düz ve açık su, garanti yol.', effect:()=> ({d:1.0,m:'➡️ Güvenli rotadan gittin, hızın aynı kaldı.'})}
+      ]
+    },
+    {
+      title:'🍞 Bir İnsan Ekmek Attı!',
+      desc:'Kıyıda biri ekmek parçası atıyor. Ne yapacaksın?',
+      options:[
+        {label:'Ekmek için dön!', sub:'Ekmek ördeklere zararlı ama çok cazip...', effect:()=> Math.random()<0.4 ? {d:1.3,m:'😋 Enerji doldu, hafif hızlandın!'} : {d:0.4,m:'🤢 Ekmek mideni bulandırdı, yavaşladın!'}},
+        {label:'Yarışa odaklan, geç!', sub:'Sağlıklı beslenme bilinci kazandı.', effect:()=> ({d:1.15,m:'💪 Disiplinli davrandın, hafif hızlandın!'})}
+      ]
+    },
+    {
+      title:'🌀 Akıntı Girdabı!',
+      desc:'Önünde güçlü bir girdap var. Stratejini seç:',
+      options:[
+        {label:'Girdabın içinden geç', sub:'Riskli ama kısa olabilir.', effect:()=> Math.random()<0.5 ? {d:1.8,m:'🚀 Girdap seni fırlattı! İnanılmaz hız!'} : {d:0.35,m:'🌊 Girdap seni yuttu, çok yavaşladın!'}},
+        {label:'Girdabı dıştan dolaş', sub:'Güvenli ama uzun yol.', effect:()=> ({d:0.8,m:'🔄 Uzun yolu seçtin, biraz yavaşladın.'})},
+        {label:'Dal ve altından geç', sub:'Cesurca! Su altından ilerle.', effect:()=> Math.random()<0.6 ? {d:1.4,m:'🤿 Mükemmel dalış! Akıntıdan kaçtın!'} : {d:0.6,m:'🫧 Dalışta takıldın, yavaşladın.'}}
+      ]
+    },
+    {
+      title:'🦅 Yırtıcı Kuş Saldırısı!',
+      desc:'Bir şahin gökyüzünde! Karar anı:',
+      options:[
+        {label:'Sazlığa saklan', sub:'Güvenli ama zaman kaybı.', effect:()=> ({d:0.7,m:'🌾 Saklandın, şahin gitti ama zaman kaybettin.'})},
+        {label:'Son sürat kaç!', sub:'Hızın varsa kurtulursun.', effect:()=> Math.random()<0.65 ? {d:1.5,m:'💨 Şahinden nefes nefese kaçtın, adrenalinle hızlandın!'} : {d:0.5,m:'😰 Şahin seni kovaladı, panikle yavaşladın!'}},
+        {label:'Su altına dal', sub:'Su kuşu avantajını kullan.', effect:()=> ({d:1.2,m:'🌊 Su altı seni korudu ve momentumunu korudun!'})}
+      ]
+    },
+    {
+      title:'⚡ Enerji Noktası!',
+      desc:'Yüzünde lezzetli su mercimeği var. Acele ediyorsun ama acıktın:',
+      options:[
+        {label:'Hızlıca ye ve devam et', sub:'Enerji için kısa mola.', effect:()=> ({d:1.3,m:'🌱 Enerji doldu, tüylerin parlıyor! Hızlandın!'})},
+        {label:'Hiç durma, tam gaz!', sub:'Açlığa dayan, yarış önemli.', effect:()=> Math.random()<0.5 ? {d:1.2,m:'🏃 Açlığa rağmen hızın düşmedi!'} : {d:0.65,m:'🥴 Enerjin bitti, açlıktan yavaşladın.'}},
+        {label:'Bolca ye, doyur kendini', sub:'Uzun mola ama tam enerji.', effect:()=> ({d:0.9,m:'🍽️ Doydun ama molan uzun sürdü, hafif yavaşladın.'})}
+      ]
+    },
+    {
+      title:'🌊 Dalga Geliyor!',
+      desc:'Büyük bir tekne dalgası yaklaşıyor:',
+      options:[
+        {label:'Dalganın üstüne çık', sub:'Sörf yap, dalgayı kullan!', effect:()=> Math.random()<0.6 ? {d:1.9,m:'🏄 MUHTEŞEM! Dalgada sürdün, roket gibi hızlandın!'} : {d:0.45,m:'💦 Dalga seni alt üst etti, yavaşladın!'}},
+        {label:'Dalganın altına gir', sub:'Su altında bekle.', effect:()=> ({d:0.85,m:'🫧 Dalga geçti, ufak bir yavaşlama yaşadın.'})},
+        {label:'Hemen kıyıya sığ', sub:'En güvenli seçenek.', effect:()=> ({d:0.7,m:'🏖️ Kıyıya sığındın, güvendesin ama geride kaldın.'})}
+      ]
+    }
+  ];
+  return pick(events);
+}
+
+/* ---------- Oyun Başlat ---------- */
+function startGame(){
+  cancelAnimationFrame(rafId);
+  const map = generateMap();
+  const racers = NAMES.map((n,i)=>({
+    name:n, color:COLORS[i],
+    x: 0,
+    baseSpeed: rnd(12,16) * map.weather.mod,
+    boost: 1,
+    boostTimer: 0,
+    lane: i,
+    done: false,
+    choicesMade: 0
+  }));
+  game = {
+    map, racers,
+    running: false,
+    finished: false,
+    choiceTriggers: [18, 38, 58, 78],
+    choiceIdx: 0,
+    waitingChoice: false,
+    startTime: 0
+  };
+  logEl.innerHTML = '';
+  winnerEl.style.display = 'none';
+  choicePanel.style.display = 'none';
+  addLog(`🗺️ Harita oluşturuldu: <b>${map.name}</b> — ${map.lengthKm} km`, 'info');
+  addLog(`🌤️ Hava: ${map.weather.name} · Su Durumu: ${map.waterFlow}`, 'info');
+  addLog(`🚩 Yarış başlıyor! Sen sarı ördeksin (Pofuduk)!`, 'info');
+  mapInfo.innerHTML = `<b>${map.name}</b> · ${map.lengthKm} km<br>🌤️ ${map.weather.name} · 🌊 ${map.waterFlow}<br>${map.desc}<br>Bölgeler: ${map.zones.map(z=>z.type).join(', ')}`;
+  startBtn.textContent = '🔄 Yeni Harita (Yeniden Başlat)';
+  lastT = 0;
+  draw();
+  setTimeout(()=>{ game.running = true; game.startTime = performance.now(); rafId = requestAnimationFrame(loop); }, 800);
+}
+
+function addLog(msg, cls){
+  const div = document.createElement('div');
+  div.className = cls || 'info';
+  div.innerHTML = msg;
+  logEl.prepend(div);
+}
+
+/* ---------- Seçim Paneli ---------- */
+function showChoice(){
+  game.waitingChoice = true;
+  const ev = makeChoiceEvent(game.map.zones);
+  choiceTitle.textContent = ev.title;
+  choiceDesc.textContent = ev.desc;
+  choiceBtns.innerHTML = '';
+  ev.options.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'choice-btn';
+    b.innerHTML = `${opt.label}<small>${opt.sub}</small>`;
+    b.addEventListener('click', ()=>{
+      const res = opt.effect();
+      const p = game.racers[0];
+      p.boost = res.d;
+      p.boostTimer = 3.5;
+      p.choicesMade++;
+      addLog(`👤 Sen: <b>${opt.label}</b> → ${res.m}`, res.d > 1 ? 'good' : (res.d < 1 ? 'bad' : 'info'));
+      choicePanel.style.display = 'none';
+      game.waitingChoice = false;
+    });
+    choiceBtns.appendChild(b);
+  });
+  choicePanel.style.display = 'block';
+}
+
+/* ---------- Ana Döngü ---------- */
+let lastT = 0;
+function loop(t){
+  if(!game) return;
+  if(!t) t = performance.now();
+  if(!lastT) lastT = t;
+  const dt = Math.min((t - lastT)/1000, 0.05) || 0;
+  lastT = t;
+
+  if(game.running && !game.waitingChoice && !game.finished){
+    game.racers.forEach((r,i)=>{
+      if(r.done) return;
+      // Boost süresi
+      if(r.boostTimer > 0){ r.boostTimer -= dt; if(r.boostTimer<=0) r.boost = 1; }
+      // Harita bölgelerinin etkisi
+      let zoneMod = 1;
+      const posPct = r.x / (canvas.width - 80) * 100;
+      game.map.zones.forEach(z=>{
+        if(posPct >= z.from && posPct <= z.to){
+          zoneMod = {sazlik:0.75, akinti:0.8, cop:0.6, cicek:1.1, golge:1.15, durgun:0.85}[z.type];
+        }
+      });
+      // Rakip yapay zekası: bazen rastgele boost alır
+      if(i>0 && Math.random() < 0.002) { r.boost = 0.8 + Math.random()*0.6; r.boostTimer = 2; }
+      r.x += r.baseSpeed * r.boost * zoneMod * dt * 9;
+
+      if(r.x >= canvas.width - 80){
+        r.done = true;
+        r.finishRank = game.racers.filter(x=>x.done).length;
+        addLog(`🏁 <b>${r.name}</b> yarışı ${r.finishRank}. olarak bitirdi!`, i===0 ? 'good' : 'info');
+        if(i===0 && !game.finished){ game.running = false; endRace(); }
+        else if(!game.finished && game.racers.every(x=>x.done)) endRace();
+      }
+    });
+
+    // Oyuncu için seçim tetikleme
+    const p = game.racers[0];
+    if(game.choiceIdx < game.choiceTriggers.length && !p.done){
+      const posPct = p.x / (canvas.width - 80) * 100;
+      if(posPct >= game.choiceTriggers[game.choiceIdx]){
+        game.choiceIdx++;
+        showChoice();
+      }
+    }
+  }
+  draw();
+  rafId = requestAnimationFrame(loop);
+}
+
+function endRace(){
+  game.finished = true;
+  const sorted = [...game.racers].sort((a,b)=>{
+    const ra = a.done ? a.finishRank : 99 - a.x/1000;
+    const rb = b.done ? b.finishRank : 99 - b.x/1000;
+    return ra - rb;
+  });
+  const me = game.racers[0];
+  if(me.finishRank === 1){
+    winnerEl.innerHTML = '🏆 MUHTEŞEM! POFUDUK BİRİNCİ OLDU! 🏆<br><small>Harika seçimler yaptın!</small>';
+    addLog('🎉 Kazandın! Ördek krallığı seni kutluyor!','good');
+  } else {
+    winnerEl.innerHTML = `🏁 Yarış Bitti! ${sorted[0].name} kazandı. Sen ${me.finishRank}. oldun.<br><small>Bir tur daha dene, farklı seçimler farklı sonuçlar getirir!</small>`;
+  }
+  winnerEl.style.display = 'block';
+}
+
+/* ---------- Çizim ---------- */
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Arka plan: su
+  const grad = ctx.createLinearGradient(0,0,0,canvas.height);
+  grad.addColorStop(0,'#7ec8e3'); grad.addColorStop(0.55,'#a8ddf0');
+  grad.addColorStop(0.56,'#8fd0a8'); grad.addColorStop(1,'#7bc48f');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Harita bölgelerini çiz
+  if(game){
+    const zoneColors = {sazlik:'rgba(60,120,60,.30)', akinti:'rgba(40,90,180,.30)', cop:'rgba(90,70,40,.35)', cicek:'rgba(230,130,200,.25)', golge:'rgba(30,30,60,.28)', durgun:'rgba(140,190,220,.25)'};
+    const zoneEmojis = {sazlik:'🌾', akinti:'🌀', cop:'🗑️', cicek:'🌸', golge:'🌳', durgun:'➖'};
+    game.map.zones.forEach(z=>{
+      const x1 = z.from/100*(canvas.width-80)+80;
+      const x2 = z.to/100*(canvas.width-80)+80;
+      ctx.fillStyle = zoneColors[z.type];
+      ctx.fillRect(x1,0,x2-x1,canvas.height);
+      ctx.font = '22px serif';
+      ctx.fillText(zoneEmojis[z.type], (x1+x2)/2-11, 30);
+    });
+  }
+
+  // Şeritler ve bitiş çizgisi
+  const lanes = 4;
+  const laneH = 70;
+  const startY = 70;
+  for(let i=0;i<lanes;i++){
+    const y = startY + i*laneH;
+    ctx.strokeStyle = 'rgba(255,255,255,.5)';
+    ctx.setLineDash([10,10]);
+    ctx.beginPath(); ctx.moveTo(20,y+25); ctx.lineTo(canvas.width-20,y+25); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = '20px serif';
+    ctx.fillText(EMOJIS[i] ? '' : '', 0,0);
+  }
+  // Başlangıç ve bitiş
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(78,40,5,canvas.height-70);
+  ctx.fillStyle = '#000';
+  for(let i=0;i<8;i++) ctx.fillRect(canvas.width-82, 40+i*((canvas.height-70)/8), 5, (canvas.height-70)/16);
+
+  if(!game) return;
+
+  // Ördekleri çiz
+  game.racers.forEach((r,i)=>{
+    const y = startY + i*laneH;
+    const x = 30 + Math.min(r.x, canvas.width-110);
+    // hız efekti
+    if(r.boost > 1.1){
+      ctx.font = '20px serif';
+      ctx.fillText('💨', x-28, y+8);
+    }
+    // ördek gövdesi
+    ctx.fillStyle = r.color;
+    ctx.beginPath();
+    ctx.ellipse(x, y, 22, 14, 0, 0, Math.PI*2);
+    ctx.fill();
+    // kafa
+    ctx.beginPath();
+    ctx.arc(x+16, y-12, 10, 0, Math.PI*2);
+    ctx.fill();
+    // göz
+    ctx.fillStyle = '#222';
+    ctx.beginPath(); ctx.arc(x+19, y-14, 2, 0, Math.PI*2); ctx.fill();
+    // gaga
+    ctx.fillStyle = '#E58E26';
+    ctx.beginPath();
+    ctx.moveTo(x+24, y-13); ctx.lineTo(x+34, y-10); ctx.lineTo(x+24, y-7);
+    ctx.closePath(); ctx.fill();
+    // isim
+    ctx.fillStyle = i===0 ? '#8a5a00' : '#345';
+    ctx.font = 'bold 13px Segoe UI';
+    ctx.fillText((i===0?'⭐ ':'')+r.name, x-20, y-30);
+    // bitiş sırası
+    if(r.done){
+      ctx.font = 'bold 20px Segoe UI';
+      ctx.fillStyle = '#c0392b';
+      ctx.fillText(RANKS[r.finishRank-1], x-8, y-58);
+    }
+  });
+
+  // İlerleme çubuğu
+  ctx.fillStyle = 'rgba(255,255,255,.85)';
+  ctx.fillRect(20, canvas.height-24, canvas.width-40, 14);
+  const p = game.racers[0];
+  const prog = Math.min(p.x/(canvas.width-110),1);
+  ctx.fillStyle = '#FFD93D';
+  ctx.fillRect(20, canvas.height-24, (canvas.width-40)*prog, 14);
+  ctx.fillStyle = '#5a3d00';
+  ctx.font = 'bold 11px Segoe UI';
+  ctx.fillText('⭐ Senin İlerlemen: %' + Math.round(prog*100), 24, canvas.height-12);
+}
+
+startBtn.addEventListener('click', startGame);
+draw();
+</script>
+</body>
+</html>
